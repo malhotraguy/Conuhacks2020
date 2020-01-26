@@ -14,6 +14,7 @@ result = fb.post('conuhacks2020-6dc7f', data)
 print(result)
 """
 import pyrebase
+from firebase_admin import db
 
 firebaseConfig = {
     "apiKey": "AIzaSyDXhXKICYn2uGx4uqZSvRqAQz8_X-btRJ4",
@@ -24,7 +25,10 @@ firebaseConfig = {
     "messagingSenderId": "434422996113"
 }
 
-def push(username,name,zendeskAppId,zendeskAppUId,skills,quizNumbers, overlappedEvents):
+firebase = pyrebase.initialize_app(firebaseConfig)
+db = firebase.database()
+
+def pushDB(username,name,zendeskAppId,zendeskAppUId,skills,quizNumbers, overlappedEvents):
     """
     ----------------------------------------
     Inserts given data into firebase db
@@ -39,9 +43,6 @@ def push(username,name,zendeskAppId,zendeskAppUId,skills,quizNumbers, overlapped
     --------------------------------------
     :return: result - boolean
     """
-    firebase = pyrebase.initialize_app(firebaseConfig)
-    db = firebase.database()
-
     skillsFinal = ''
     for i in range(len(skills)):
         if i != (len(skills)-1):
@@ -62,7 +63,6 @@ def push(username,name,zendeskAppId,zendeskAppUId,skills,quizNumbers, overlapped
         else:
             overlappedEventsFinal += str(overlappedEvents[i])
     data = {
-        'username':username,
         'name':name,
         'zendeskAppID':zendeskAppId,
         'zendeskAppUId':zendeskAppUId,
@@ -70,7 +70,28 @@ def push(username,name,zendeskAppId,zendeskAppUId,skills,quizNumbers, overlapped
         'quizNumbers':quizNumbersFinal,
         'overlappedEvents':overlappedEventsFinal,
     }
-    result = db.push(data)
+    result = db.child(username).set(data)
     return result
-ok = pushDB("luix5540", "Edmund", "abcd1234", "1234abcd", ["python","java","HTML"], [10,50,100], ["skating","coffee"])
-print(ok)
+
+def fetchDB(username,fields):
+    """
+    -------------------------------
+    :param username: string
+    :param fields: list
+    ------------------------------
+    :return data: dict
+    """
+    """
+    ref = db.reference('server/saving-data/fireblog/posts')
+    print(ref.get())
+    """
+    x = {}
+    for field in fields:
+        i = db.child(username).child(field).get().val()
+        x.update({field: i})
+    return x
+"""
+pushDB("lui5540","Edmund","abc123","123abc",["python","java","HTML"],[10,50,100], ["skating","coffee"])
+nah = fetchDB("lui5540",["name","skills"])
+print(nah)
+"""
