@@ -1,13 +1,42 @@
 # calendar_features.py - conuhacks 2020 - 1/25/2020 - maxtheaxe
+from __future__ import print_function
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import datetime
 from dateutil.parser import *
+import pickle
+import os.path
+import sys
+
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+
+# get_creds() basic creds grabber for testing, only supports one user
+def get_creds(user_id = ''):
+	creds = None
+	# The file token.pickle stores the user's access and refresh tokens, and is
+	# created automatically when the authorization flow completes for the first
+	# time.
+	token_name = "token-" + user_id + ".pickle"
+	if os.path.exists(token_name):
+		with open(token_name, 'rb') as token:
+			creds = pickle.load(token)
+	# If there are no (valid) credentials available, let the user log in.
+	if not creds or not creds.valid:
+		if creds and creds.expired and creds.refresh_token:
+			creds.refresh(Request())
+		else:
+			flow = InstalledAppFlow.from_client_secrets_file(
+				'credentials.json', SCOPES)
+			creds = flow.run_local_server(port=0)
+		# Save the credentials for the next run
+		with open(token_name, 'wb') as token:
+			pickle.dump(creds, token)
+	return creds # return creds for later usage
 
 # retrieve_calendar() takes creds as arg, retrieves calendar for the week 
 # and returns it as list of dicts (each is one event)
-def retrieve_calendar():
+def retrieve_calendar(creds):
 	service = build('calendar', 'v3', credentials=creds)
 	# Call the Calendar API using today's date, retrieve next week
 	now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
@@ -20,7 +49,8 @@ def retrieve_calendar():
 	events = events_result.get('items', [])
 	if not events: # no upcoming events within next week
 		print('No upcoming events found within the next week.')
-	return events # returns list of events (each is a dict)
+	# returns list of events (each is a dict); upgrades dates to datetime objs
+	return upgrade_calendar(events)
 
 # parse_time() takes in unformatted time string (from gcal api) and returns datetime obj
 def parse_time(time_string):
@@ -55,5 +85,51 @@ def target_day(event_list, wanted_day = datetime.datetime.utcnow()):
 	return refined_event_list # return the new list of events (from only target day)
 
 # compare_calendars() given two lists of events, returns availability (time w/o overlap)
-def compare_calendars(schedule_a, schedule_b):
-	return
+# **considering 7 am the earliest possible volunteer time**
+def compare_calendars(event_list_a, event_list_b):
+	availability_times = [] # list of start and stops for available times to volunteer
+	for event_a in event_list_a:
+		# set start and end times for event_list_a
+		event_a_start = event_a['start'].get('dateTime', event_a['start'].get('date'))
+		event_a_end = event_a['end'].get('dateTime', event_a['end'].get('date'))
+		# event_b_free_start = event_a
+		for event_b in event_list_b:
+			availbility_event = [] # list for individual availability event
+			# set start and end times for event_list_b
+			event_b_start = event_b['start'].get('dateTime', event_b['start'].get('date'))
+			event_b_end = event_b['end'].get('dateTime', event_b['end'].get('date'))
+			# flip start and end for b to get opposite (non-event times)
+			# compare times to check for overlaps
+			if event_a_start > event_b_end: # if the start of event_a after event_b end
+				continue # skip to the next event_b, don't bother checking start
+			elif event_a_start > event_b_start: # if a starts after b, there is overlap
+				availability_event.append(event_a_start) # add the start of the later event
+				if event_a_end < event_b_end: # if a ends before b, use the end of a
+					availability_event.append(event_a_end) # append to avail period
+				else: # otherwise, use the end of b as the end of avail
+					availability_event.append(event_b_end) # append to avail period
+			elif event_a_end > event_b_start: # there is overlap, a starts first
+				availability_event.append(event_b_start) # add the start of the later event
+				if event_a_end < event_b_end: # if a ends before b, use the end of a
+					availability_event.append(event_a_end) # append to avail period
+				else: # otherwise, use the end of b as the end of avail
+					availability_event.append(event_b_end) # append to avail period
+			else: # event a ends before event b starts, there is no overlap
+				continue # skip to the next event b
+			availability_times(availability_event) # append availability period to list
+	return availability_times # return list of availability periods
+
+def main(argv):
+	print("\n\t---DonateTime Calendar Manager Module---")
+	if (len(argv) != 3):
+		print("\tIncorrect syntax. Use: python calendar_features <user-id-a> <user-id-b>")
+		return
+	creds_a = get_creds(argv[1]) # calls get_creds with userid 1 (passed as cmd line arg)
+	creds_b = get_creds(argv[2]) # calls get_creds with userid 2 (passed as cmd line arg)
+	calendar_a = retrieve_calendar(creds_a) # retrieves calendar with creds a from earlier
+	calendar_b = retrieve_calendar(creds_b) # retrieves calendar with creds b from earlier
+	print( "calendar_a:\n", calendar_a )
+	print( "\n\n\ncalendar_b:\n", calendar_b )
+
+if __name__ == '__main__':
+	main(sys.argv)
