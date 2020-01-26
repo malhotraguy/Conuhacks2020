@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link href="assets/css/user_form.css" rel="stylesheet" type="text/css" />
+	<!-- <link href="assets/css/user_form.css" rel="stylesheet" type="text/css" /> -->
+	<!-- <link ... href="{{ url_for('static', filename='assets/css/user_form.css') }}" /> -->
 	<meta charset="UTF-8">
 	<title>Donate Time</title>
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400&display=swap" rel="stylesheet"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<style>
+		body {
+		text-align: center;
+		font-family: 'Lato', sans-serif;
+		}
+		h1 {
+		/*background-color: #d3d3d3;*/
+		}
+		h3 {
+		padding-bottom: 0px;
+		margin-bottom: 2px;
+		}
+		h4 {
+		padding-top: 0px;
+		margin-top: 2px;
+		font-weight: normal;
+		font-style: italic;
+		}
+		.btn {
+		font-size: 20px;
+		border: 0;
+		background: #d3d3d3;
+		box-shadow: none;
+		border-radius: 2px;
+		}
+	</style>
 </head>
 <body>
 <h1>Donate Time</h1>
@@ -60,7 +87,7 @@
 				</select> 
 			</div>
 			<br />
-			<label>Helping Underpriveleged People</label>
+			<label>Working with Animals</label>
 			<div class="custom-file">
 				<!-- <input type="text" class="custom-file-input" name="ques_3" placeholder="1, 2, 3.."> -->
 				<select name="ques_3" class="custom-file-input">
