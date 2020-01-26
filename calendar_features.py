@@ -77,7 +77,7 @@ def target_day(event_list, wanted_day = datetime.datetime.utcnow()):
 	for event in event_list: # for each event in the list
 		start = event['start'].get('dateTime', event['start'].get('date')) # start time
 		end = event['end'].get('dateTime', event['end'].get('date')) # end time
-		if (compare_day(start, end)): # skip multi-day events
+		if not (compare_day(start, end)): # skip multi-day events
 			print ("Multi-day event, skipping")
 			continue # move to next event
 		if (compare_day(start, wanted_day)): # if the wanted day is the same as event
@@ -86,21 +86,33 @@ def target_day(event_list, wanted_day = datetime.datetime.utcnow()):
 
 # compare_calendars() given two lists of events, returns availability (time w/o overlap)
 # **considering 7 am the earliest possible volunteer time**
+# list_a (1st arg) is charity calendar, uses given events as openings
+# list_b (2nd arg) is employee calendar, uses spaces between events as openings
 def compare_calendars(event_list_a, event_list_b):
 	availability_times = [] # list of start and stops for available times to volunteer
 	for event_a in event_list_a:
 		# set start and end times for event_list_a
 		event_a_start = event_a['start'].get('dateTime', event_a['start'].get('date'))
 		event_a_end = event_a['end'].get('dateTime', event_a['end'].get('date'))
-		# event_b_free_start = event_a
+		# take date from event a obj and set time to 7am as earliest possible start
+		# event_b_free_start = event_a_start.replace(minute=00, hour=07, second=00)
+		# event_b_counter = 0 # go away, I know there's a better way
+		event_b_start = event_a_start.replace(minute=0, hour=7, second=0)
 		for event_b in event_list_b:
-			availbility_event = [] # list for individual availability event
+			availability_event = [] # list for individual availability event
 			# set start and end times for event_list_b
-			event_b_start = event_b['start'].get('dateTime', event_b['start'].get('date'))
-			event_b_end = event_b['end'].get('dateTime', event_b['end'].get('date'))
+			# event_b_start = event_b['start'].get('dateTime', event_b['start'].get('date'))
+			# event_b_end = event_b['end'].get('dateTime', event_b['end'].get('date'))
+			# # use prev end as start and current start as end, to get space between events
+			# if event_b_counter == 0: # if it's the first event_b
+			# 	event_b_start = event_b_free_start # use 7am as the first starting time
+			# 	event_b_counter += 1 # increment the counter (doesn't even need it again)
+			event_b_end = event_b['start'].get('dateTime', event_b['start'].get('date'))
 			# flip start and end for b to get opposite (non-event times)
 			# compare times to check for overlaps
 			if event_a_start > event_b_end: # if the start of event_a after event_b end
+				# set next start (stored outside loop) to current end
+				event_b_start = event_b['end'].get('dateTime', event_b['end'].get('date'))
 				continue # skip to the next event_b, don't bother checking start
 			elif event_a_start > event_b_start: # if a starts after b, there is overlap
 				availability_event.append(event_a_start) # add the start of the later event
@@ -115,8 +127,13 @@ def compare_calendars(event_list_a, event_list_b):
 				else: # otherwise, use the end of b as the end of avail
 					availability_event.append(event_b_end) # append to avail period
 			else: # event a ends before event b starts, there is no overlap
+				# set next start (stored outside loop) to current end
+				event_b_start = event_b['end'].get('dateTime', event_b['end'].get('date'))
 				continue # skip to the next event b
-			availability_times(availability_event) # append availability period to list
+			if (availability_event[0] != availability_event[1]):
+				availability_times.append(availability_event) # append availability period to list
+			# set next start (stored outside loop) to current end
+			event_b_start = event_b['end'].get('dateTime', event_b['end'].get('date'))
 	return availability_times # return list of availability periods
 
 def main(argv):
@@ -124,12 +141,22 @@ def main(argv):
 	if (len(argv) != 3):
 		print("\tIncorrect syntax. Use: python calendar_features <user-id-a> <user-id-b>")
 		return
-	creds_a = get_creds(argv[1]) # calls get_creds with userid 1 (passed as cmd line arg)
-	creds_b = get_creds(argv[2]) # calls get_creds with userid 2 (passed as cmd line arg)
-	calendar_a = retrieve_calendar(creds_a) # retrieves calendar with creds a from earlier
-	calendar_b = retrieve_calendar(creds_b) # retrieves calendar with creds b from earlier
-	print( "calendar_a:\n", calendar_a )
-	print( "\n\n\ncalendar_b:\n", calendar_b )
+	creds_employee = get_creds(argv[1]) # calls get_creds with userid 1 (cmd line arg)
+	creds_charity = get_creds(argv[2]) # calls get_creds with userid 2 (cmd line arg)
+	# retrieves calendar with employee creds from earlier
+	calendar_employee = retrieve_calendar(creds_employee)
+	# retrieves calendar with charity creds from earlier
+	calendar_charity = retrieve_calendar(creds_charity)
+	# print( "calendar_a:\n", calendar_a )
+	# print( "\n\n\ncalendar_b:\n", calendar_b )
+	wanted_day = datetime.datetime(2020, 1, 27) # new datetime obj (yr, mnth, day)
+	test_day_employee = target_day(calendar_employee, wanted_day) # filter to just wanted_day
+	test_day_charity = target_day(calendar_charity, wanted_day) # filter to just wanted_day
+	openings = compare_calendars(test_day_charity, test_day_employee) # list of openings
+	for open_period in openings:
+		print("\nopen period:")
+		print("\tstart: ", open_period[0])
+		print("\tend: ", open_period[1])
 
 if __name__ == '__main__':
 	main(sys.argv)
