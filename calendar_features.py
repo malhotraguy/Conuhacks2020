@@ -85,7 +85,7 @@ def target_day(event_list, wanted_day = datetime.datetime.utcnow()):
 	return refined_event_list # return the new list of events (from only target day)
 
 # compare_calendars() given two lists of events, returns availability (time w/o overlap)
-# **considering 7 am the earliest possible volunteer time**
+# **considering 7am the earliest possible volunteer time**
 # list_a (1st arg) is charity calendar, uses given events as openings
 # list_b (2nd arg) is employee calendar, uses spaces between events as openings
 def compare_calendars(event_list_a, event_list_b):
@@ -131,10 +131,26 @@ def compare_calendars(event_list_a, event_list_b):
 				event_b_start = event_b['end'].get('dateTime', event_b['end'].get('date'))
 				continue # skip to the next event b
 			if (availability_event[0] != availability_event[1]):
+				availability_event.append(event_a['summary']) # append name of event to desc
 				availability_times.append(availability_event) # append availability period to list
 			# set next start (stored outside loop) to current end
 			event_b_start = event_b['end'].get('dateTime', event_b['end'].get('date'))
-	return availability_times # return list of availability periods
+	return availability_times # return list of availability periods with names of opps
+
+# volunteer_times() takes in availability_times, gives plausible volunteer times (>= 1hr)
+def volunteer_times(availability_times):
+	plausible_blocks = [] # list of plausible volunteer times
+	for period in availability_times:
+		start = period[0] # set first start sub block to start of open big block
+		while True: # break out once we've filled the block with max hour blocks
+			end = start + datetime.timedelta(hours=1) # make the end of a sub block
+			if (end > period[1]): # if the sub block runs past the end time
+				break # the big block has no more smaller blocks to offer
+			else: # either it's reached the exact end or there's more room for sub blocks
+				# append plausible time to main list with event name
+				plausible_blocks.append([start, end, period[2]])
+			start = end # set next round's start to currend end
+	return plausible_blocks # returns list of plausible volunteer blocks (at least 1 hr)
 
 def main(argv):
 	print("\n\t---DonateTime Calendar Manager Module---")
@@ -149,14 +165,21 @@ def main(argv):
 	calendar_charity = retrieve_calendar(creds_charity)
 	# print( "calendar_a:\n", calendar_a )
 	# print( "\n\n\ncalendar_b:\n", calendar_b )
-	wanted_day = datetime.datetime(2020, 1, 27) # new datetime obj (yr, mnth, day)
+	wanted_day = datetime.datetime(2020, 1, 30) # new datetime obj (yr, mnth, day)
 	test_day_employee = target_day(calendar_employee, wanted_day) # filter to just wanted_day
 	test_day_charity = target_day(calendar_charity, wanted_day) # filter to just wanted_day
+	print("\n\nBig Availability Blocks:\n")
 	openings = compare_calendars(test_day_charity, test_day_employee) # list of openings
 	for open_period in openings:
-		print("\nopen period:")
+		print("\n\topening name: ", open_period[2])
 		print("\tstart: ", open_period[0])
 		print("\tend: ", open_period[1])
+	print("\n\nPlausible Volunteer Blocks:\n")
+	poss_vol_blocks = volunteer_times(openings) # list of reasonable volunteer blocks
+	for vol_block in poss_vol_blocks:
+		print("\n\topening name: ", vol_block[2])
+		print("\tstart: ", vol_block[0])
+		print("\tend: ", vol_block[1])
 
 if __name__ == '__main__':
 	main(sys.argv)
