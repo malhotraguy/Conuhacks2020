@@ -24,7 +24,7 @@ firebaseConfig = {
     "messagingSenderId": "434422996113"
 }
 
-def pushDB(username, name, zendeskAppId, zendeskAppUId, skills, quizNumbers, overlappedEvents):
+def push(username,name,zendeskAppId,zendeskAppUId,skills,quizNumbers, overlappedEvents):
     """
     ----------------------------------------
     Inserts given data into firebase db
@@ -43,17 +43,24 @@ def pushDB(username, name, zendeskAppId, zendeskAppUId, skills, quizNumbers, ove
     db = firebase.database()
 
     skillsFinal = ''
-    for skill in skills:
-        skillsFinal += skill
+    for i in range(len(skills)):
+        if i != (len(skills)-1):
+            skillsFinal += str(skills[i]) + ","
+        else:
+            skillsFinal += str(skills[i])
 
     quizNumbersFinal = ''
-    for num in quizNumbers:
-        quizNumbersFinal += num
-
+    for i in range(len(quizNumbers)):
+        if i != (len(quizNumbers)-1):
+            quizNumbersFinal += str(quizNumbers[i]) + ","
+        else:
+            quizNumbersFinal += str(quizNumbers[i])
     overlappedEventsFinal = ''
-    for event in overlappedEvents:
-        overlappedEventsFinal += event
-
+    for i in range(len(overlappedEvents)):
+        if i != (len(overlappedEvents)-1):
+            overlappedEventsFinal += str(overlappedEvents[i]) + ","
+        else:
+            overlappedEventsFinal += str(overlappedEvents[i])
     data = {
         'username':username,
         'name':name,
@@ -65,3 +72,5 @@ def pushDB(username, name, zendeskAppId, zendeskAppUId, skills, quizNumbers, ove
     }
     result = db.push(data)
     return result
+ok = pushDB("luix5540", "Edmund", "abcd1234", "1234abcd", ["python","java","HTML"], [10,50,100], ["skating","coffee"])
+print(ok)
