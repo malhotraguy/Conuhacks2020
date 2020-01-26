@@ -8,10 +8,9 @@ from flask import Flask
 from flask import request
 from smooch.rest import ApiException
 
-
 # Config
-KEY_ID = 'your_key_id'
-SECRET = 'your_secret_key'
+KEY_ID = 'app_5e2cf154fda5e4000fb5d20d'
+SECRET = 'pvqyRcu7WABj9Jo9mcr0xEW6Ck2wwBK0hLVmKeeBedvkb7vn5YwHdPP_3IHm_wCSnVpxhCaBqriMhHJq_Iocdw'
 
 token_bytes = jwt.encode(
     {'scope': 'app'}, SECRET, algorithm='HS256', headers={'kid': KEY_ID})
@@ -21,11 +20,30 @@ smooch.configuration.api_key['Authorization'] = token
 smooch.configuration.api_key_prefix['Authorization'] = 'Bearer'
 api_instance = smooch.ConversationApi()
 
-
 # Server http://flask.pocoo.org/docs/0.12/quickstart/
 app = Flask(__name__)
+USER_INFO = {
+    "Edmund_FB": ["5e2c892818768b000f696b4b", "faabcb43ffe3dbf868348792"],
+    "RM_WHATSAPP": ["5e2c892818768b000f696b4b", "15391ed89a11661282ef9b26"],
+    "R_TELEGRAM": ["5e2c892818768b000f696b4b", "0f226e3cc9b63c1db2a10a3f"]
+
+}
 
 
+def smooch_send_message(app_id, app_user_id, message):
+    try:
+        message_post_body = smooch.MessagePost(
+            'appMaker', 'text', text=message)
+        api_response = api_instance.post_message(
+            app_id, app_user_id, message_post_body)
+        print('API RESPONSE:')
+        pprint(api_response)
+    except ApiException as e:
+        print('API ERROR: %s\n' % e)
+
+@app.route("/",methods=["GET"])
+def hello():
+    return "Server is running good!!"
 # Expose /messages endpoint to capture webhooks
 # https://docs.smooch.io/rest/#webhooks-payload
 @app.route('/messages', methods=['POST', 'GET'])
@@ -47,4 +65,17 @@ def messages():
             pprint(api_response)
         except ApiException as e:
             print('API ERROR: %s\n' % e)
-    return ('', 204)
+    return '', 204
+
+
+@app.route('/send_msg', methods=["POST", "GET"])
+def send_msg():
+    recieved_msg = request.args["msg"]
+    for user in USER_INFO:
+        print(USER_INFO[user])
+        smooch_send_message(app_id=USER_INFO[user][0], app_user_id=USER_INFO[user][1], message=recieved_msg)
+    return "Success!!"
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)
