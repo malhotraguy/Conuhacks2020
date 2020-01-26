@@ -92,9 +92,23 @@ def messages():
 def send_msg():
     recieved_msg = request.args["msg"]
     for user in USER_INFO:
-        print(USER_INFO[user])
         smooch_send_message(app_id=USER_INFO[user][0], app_user_id=USER_INFO[user][1], message=recieved_msg)
     return "Success!!"
+
+
+@app.route("/ranked_events", methods=["GET", "POST"])
+def display_ranked_events():
+    ranked_events = request.args["ranked_events"]
+    return render_template('testcases.html', cases=ranked_events, title="Test Cases")
+
+
+@app.route("/info", methods=['POST'])
+def getinfo():
+    if request.method == 'POST':
+        print(request.form)
+        test = request.form["checks"]
+
+        return str(test)
 
 
 if __name__ == "__main__":
