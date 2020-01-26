@@ -1,5 +1,5 @@
 import pyrebase
-from firebase_admin import db
+# from firebase_admin import db
 
 firebaseConfig = {
     "apiKey": "AIzaSyDXhXKICYn2uGx4uqZSvRqAQz8_X-btRJ4",
@@ -13,47 +13,37 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
-def pushDB(username,name,zendeskAppId,zendeskAppUId,quizNumbers, overlappedEvents,event,volunteerPoints):
+
+def push_db(username, name, zendesk_app_id, zendesk_app_uid, quiz_metrics, ranked_events="", chosen_event="", volunteer_points=0):
     """
     ----------------------------------------
     Inserts given data into firebase db
     ---------------------------------------
     :param username: string
     :param name: string
-    :param zendeskAppId: string
-    :param zendeskAppUId: string
-    :param quizNumbers: list
-    :param overlappedEvents: list
-    :param volunteerPoints: int
+    :param zendesk_app_id: string
+    :param zendesk_app_uid: string
+    :param quiz_metrics: list
+    :param ranked_events: list
+    :param volunteer_points: int
     --------------------------------------
     :return: result - boolean
     """
-    quizNumbersFinal = ''
-    for i in range(len(quizNumbers)):
-        if i != (len(quizNumbers)-1):
-            quizNumbersFinal += str(quizNumbers[i]) + ","
-        else:
-            quizNumbersFinal += str(quizNumbers[i])
-    overlappedEventsFinal = ''
-    for i in range(len(overlappedEvents)):
-        if i != (len(overlappedEvents)-1):
-            overlappedEventsFinal += str(overlappedEvents[i]) + ","
-        else:
-            overlappedEventsFinal += str(overlappedEvents[i])
     data = {
-        'name':name,
-        'zendeskAppID':zendeskAppId,
-        'zendeskAppUID':zendeskAppUId,
-        'quizNumbers':quizNumbersFinal,
-        'overlappedEvents':overlappedEventsFinal,
-        'event':event,
-        'volunteerPoints':volunteerPoints
+        'name': name,
+        'zendesk_app_id': zendesk_app_id,
+        'zendesk_app_uid': zendesk_app_uid,
+        'quiz_metrics': quiz_metrics,
+        'ranked_events': ranked_events,
+        'chosen_event': chosen_event,
+        'volunteer_points': volunteer_points
 
     }
     result = db.child(username).set(data)
     return result
 
-def fetchDB(username,fields):
+
+def fetchDB(username, fields):
     """
     -------------------------------
     Fetch data about a specific person
@@ -68,6 +58,7 @@ def fetchDB(username,fields):
         i = db.child(username).child(field).get().val()
         x.update({field: i})
     return x
+
 
 def searchEvent(event):
     """
@@ -87,13 +78,13 @@ def searchEvent(event):
         temp = []
         if i["event"] == event:
             user = i["name"]
-            temp.append(i["zendeskAppID"])
-            temp.append(i["zendeskAppUID"])
-            people.update({user:temp})
+            temp.append(i["zendesk_app_id"])
+            temp.append(i["zendesk_app_uid"])
+            people.update({user: temp})
     return people
 
 
-def changeStatus(username, event):
+def changeStatus(username, field_to_change,field_value):
     """
     -------------------------------------
     searches for people going to the same event
@@ -103,17 +94,10 @@ def changeStatus(username, event):
     ----------------------------------------
     :return: done: boolean
     """
-    done = False
-    userEvent = db.child(username).child("event").get().val()
-    if userEvent == "":
-        db.child(username).child("event").set(event)
-        done = True
-    return done
+    db.child(username).child(field_to_change).set(field_value)
+    return True
 
-#a function that goes through all the users and gives the specific users UID and ID based upon GOING to same event.
 
-pushDB("heyThere","Rahul","abc","123",[0,10,50], ["apple","bananas"],"soccer",0)
-# nah = fetchDB("heyThere",["name","zendeskAppID"])
-# print(nah)
-#print(search("soccer"))
-#print(changeStatus("heyThere","soccer"))
+# a function that goes through all the users and gives the specific users UID and ID based upon GOING to same event.
+if __name__ == "__main__":
+    push_db("heyThere", "Rahul", "abc", "123", [0, 10, 50], ["apple", "bananas"], "soccer", 0)
