@@ -1,0 +1,42 @@
+
+	---DonateTime Calendar Manager Module---
+Retrieving events for the next week...
+Retrieving events for the next week...
+{'kind': 'calendar#event', 'etag': '"3159975877048000"', 'id': '2q8v0d5jq8k6d3pnsa58fh4bfv_20200130T104500Z', 'status': 'confirmed', 'htmlLink': 'https://www.google.com/calendar/event?eid=MnE4djBkNWpxOGs2ZDNwbnNhNThmaDRiZnZfMjAyMDAxMzBUMTA0NTAwWiByb253YWxkLmJhcnRvbGlvQG0', 'created': '2020-01-25T21:32:18.000Z', 'updated': '2020-01-25T21:32:18.524Z', 'summary': 'Lunch', 'location': 'Foss, Mayflower Hill Dr, Waterville, ME 04901, USA', 'colorId': '2', 'creator': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'organizer': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'start': {'dateTime': datetime.datetime(2020, 1, 30, 5, 45, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'end': {'dateTime': datetime.datetime(2020, 1, 30, 6, 45, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'recurringEventId': '2q8v0d5jq8k6d3pnsa58fh4bfv', 'originalStartTime': {'dateTime': '2020-01-30T05:45:00-05:00', 'timeZone': 'America/Toronto'}, 'iCalUID': '2q8v0d5jq8k6d3pnsa58fh4bfv@google.com', 'sequence': 0, 'reminders': {'useDefault': True}}
+{'kind': 'calendar#event', 'etag': '"3160072470442000"', 'id': '5li8dpv6o10jlia0o8e4qj7059', 'status': 'confirmed', 'htmlLink': 'https://www.google.com/calendar/event?eid=NWxpOGRwdjZvMTBqbGlhMG84ZTRxajcwNTkgcm9ud2FsZC5iYXJ0b2xpb0Bt', 'created': '2020-01-26T10:57:15.000Z', 'updated': '2020-01-26T10:57:15.221Z', 'summary': 'test event', 'creator': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'organizer': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'start': {'dateTime': datetime.datetime(2020, 1, 30, 7, 0, tzinfo=tzoffset(None, -18000))}, 'end': {'dateTime': datetime.datetime(2020, 1, 30, 8, 0, tzinfo=tzoffset(None, -18000))}, 'iCalUID': '5li8dpv6o10jlia0o8e4qj7059@google.com', 'sequence': 0, 'attendees': [{'email': 'bronson.gergand@gmail.com', 'responseStatus': 'needsAction'}, {'email': 'ronwald.bartolio@gmail.com', 'organizer': True, 'self': True, 'responseStatus': 'accepted'}], 'reminders': {'useDefault': True}}
+{'kind': 'calendar#event', 'etag': '"3159972726140000"', 'id': '5stgo197crpc7oqpal0h8hvf9i_20200130T171500Z', 'status': 'confirmed', 'htmlLink': 'https://www.google.com/calendar/event?eid=NXN0Z28xOTdjcnBjN29xcGFsMGg4aHZmOWlfMjAyMDAxMzBUMTcxNTAwWiByb253YWxkLmJhcnRvbGlvQG0', 'created': '2020-01-25T21:06:03.000Z', 'updated': '2020-01-25T21:06:03.070Z', 'summary': 'Lunch', 'location': 'Foss, Mayflower Hill Dr, Waterville, ME 04901, USA', 'colorId': '2', 'creator': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'organizer': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'start': {'dateTime': datetime.datetime(2020, 1, 30, 12, 15, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'end': {'dateTime': datetime.datetime(2020, 1, 30, 13, 45, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'recurringEventId': '5stgo197crpc7oqpal0h8hvf9i', 'originalStartTime': {'dateTime': '2020-01-30T12:15:00-05:00', 'timeZone': 'America/Toronto'}, 'iCalUID': '5stgo197crpc7oqpal0h8hvf9i@google.com', 'sequence': 0, 'reminders': {'useDefault': True}}
+{'kind': 'calendar#event', 'etag': '"3159973674244000"', 'id': '6c191sll9df3makmva7gh1it0p_20200130T190000Z', 'status': 'confirmed', 'htmlLink': 'https://www.google.com/calendar/event?eid=NmMxOTFzbGw5ZGYzbWFrbXZhN2doMWl0MHBfMjAyMDAxMzBUMTkwMDAwWiByb253YWxkLmJhcnRvbGlvQG0', 'created': '2020-01-25T21:13:57.000Z', 'updated': '2020-01-25T21:13:57.122Z', 'summary': 'Team Meeting', 'colorId': '4', 'creator': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'organizer': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'start': {'dateTime': datetime.datetime(2020, 1, 30, 14, 0, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'end': {'dateTime': datetime.datetime(2020, 1, 30, 15, 30, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'recurringEventId': '6c191sll9df3makmva7gh1it0p', 'originalStartTime': {'dateTime': '2020-01-30T14:00:00-05:00', 'timeZone': 'America/Toronto'}, 'iCalUID': '6c191sll9df3makmva7gh1it0p@google.com', 'sequence': 0, 'reminders': {'useDefault': True}}
+{'kind': 'calendar#event', 'etag': '"3159973917378000"', 'id': '7taac9s0vt66varmmthbllv68e_20200130T204500Z', 'status': 'confirmed', 'htmlLink': 'https://www.google.com/calendar/event?eid=N3RhYWM5czB2dDY2dmFybW10aGJsbHY2OGVfMjAyMDAxMzBUMjA0NTAwWiByb253YWxkLmJhcnRvbGlvQG0', 'created': '2020-01-25T21:15:58.000Z', 'updated': '2020-01-25T21:15:58.689Z', 'summary': 'Coding', 'location': 'Miller Library, 5100 Mayflower Hill Dr, Waterville, ME 04901, USA', 'colorId': '5', 'creator': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'organizer': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'start': {'dateTime': datetime.datetime(2020, 1, 30, 15, 45, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'end': {'dateTime': datetime.datetime(2020, 1, 30, 18, 0, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'recurringEventId': '7taac9s0vt66varmmthbllv68e', 'originalStartTime': {'dateTime': '2020-01-30T15:45:00-05:00', 'timeZone': 'America/Toronto'}, 'iCalUID': '7taac9s0vt66varmmthbllv68e@google.com', 'sequence': 0, 'reminders': {'useDefault': True}}
+{'kind': 'calendar#event', 'etag': '"3159974247520000"', 'id': '0foqjg6rksh7pcodlniv6sjpdj_20200131T003000Z', 'status': 'confirmed', 'htmlLink': 'https://www.google.com/calendar/event?eid=MGZvcWpnNnJrc2g3cGNvZGxuaXY2c2pwZGpfMjAyMDAxMzFUMDAzMDAwWiByb253YWxkLmJhcnRvbGlvQG0', 'created': '2020-01-25T21:17:22.000Z', 'updated': '2020-01-25T21:18:43.760Z', 'summary': 'Dinner', 'location': 'Foss, Mayflower Hill Dr, Waterville, ME 04901, USA', 'colorId': '2', 'creator': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'organizer': {'email': 'ronwald.bartolio@gmail.com', 'self': True}, 'start': {'dateTime': datetime.datetime(2020, 1, 30, 19, 30, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'end': {'dateTime': datetime.datetime(2020, 1, 30, 20, 30, tzinfo=tzoffset(None, -18000)), 'timeZone': 'America/Toronto'}, 'recurringEventId': '0foqjg6rksh7pcodlniv6sjpdj', 'originalStartTime': {'dateTime': '2020-01-30T19:30:00-05:00', 'timeZone': 'America/Toronto'}, 'iCalUID': '0foqjg6rksh7pcodlniv6sjpdj@google.com', 'sequence': 0, 'reminders': {'useDefault': True}}
+
+
+Big Availability Blocks:
+
+
+	opening name:  Clothing Drive
+	start:  2020-01-30 08:00:00-05:00
+	end:  2020-01-30 12:00:00-05:00
+
+	opening name:  Assisted Living Visitation
+	start:  2020-01-30 15:30:00-05:00
+	end:  2020-01-30 15:45:00-05:00
+
+
+Plausible Volunteer Blocks:
+
+
+	opening name:  Clothing Drive
+	start:  2020-01-30 08:00:00-05:00
+	end:  2020-01-30 09:00:00-05:00
+
+	opening name:  Clothing Drive
+	start:  2020-01-30 09:00:00-05:00
+	end:  2020-01-30 10:00:00-05:00
+
+	opening name:  Clothing Drive
+	start:  2020-01-30 10:00:00-05:00
+	end:  2020-01-30 11:00:00-05:00
+
+	opening name:  Clothing Drive
+	start:  2020-01-30 11:00:00-05:00
+	end:  2020-01-30 12:00:00-05:00
