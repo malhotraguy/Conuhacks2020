@@ -9,7 +9,7 @@ import pickle
 import os.path
 import sys
 
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 # get_creds() basic creds grabber for testing, only supports one user
 def get_creds(user_id = ''):
@@ -34,10 +34,14 @@ def get_creds(user_id = ''):
 			pickle.dump(creds, token)
 	return creds # return creds for later usage
 
+# start_serv() create service using creds, that can be accessed again later for writing
+def start_serv(creds):
+	return build('calendar', 'v3', credentials=creds) # return built service
+
 # retrieve_calendar() takes creds as arg, retrieves calendar for the week 
 # and returns it as list of dicts (each is one event)
-def retrieve_calendar(creds):
-	service = build('calendar', 'v3', credentials=creds)
+def retrieve_calendar(service):
+	# service = build('calendar', 'v3', credentials=creds)
 	# Call the Calendar API using today's date, retrieve next week
 	now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
 	week_later = (datetime.datetime.utcnow() + 
@@ -157,12 +161,16 @@ def main(argv):
 	if (len(argv) != 3):
 		print("\tIncorrect syntax. Use: python calendar_features <user-id-a> <user-id-b>")
 		return
+	# create credentials for users
 	creds_employee = get_creds(argv[1]) # calls get_creds with userid 1 (cmd line arg)
 	creds_charity = get_creds(argv[2]) # calls get_creds with userid 2 (cmd line arg)
-	# retrieves calendar with employee creds from earlier
-	calendar_employee = retrieve_calendar(creds_employee)
-	# retrieves calendar with charity creds from earlier
-	calendar_charity = retrieve_calendar(creds_charity)
+	# store services for users
+	serv_employee = start_serv(creds_employee) # stores employee service created w creds
+	serv_charity = start_serv(creds_charity) # stores charity service created w creds
+	# retrieves calendar with employee serv from earlier
+	calendar_employee = retrieve_calendar(serv_employee)
+	# retrieves calendar with charity serv from earlier
+	calendar_charity = retrieve_calendar(serv_charity)
 	# print( "calendar_a:\n", calendar_a )
 	# print( "\n\n\ncalendar_b:\n", calendar_b )
 	wanted_day = datetime.datetime(2020, 1, 30) # new datetime obj (yr, mnth, day)
