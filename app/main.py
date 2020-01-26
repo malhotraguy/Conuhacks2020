@@ -1,10 +1,8 @@
-from __future__ import print_function
+from pprint import pprint
 
 import jwt
 import smooch
-
-from pprint import pprint
-from flask import Flask
+from flask import Flask, render_template
 from flask import request
 from smooch.rest import ApiException
 
@@ -41,9 +39,31 @@ def smooch_send_message(app_id, app_user_id, message):
     except ApiException as e:
         print('API ERROR: %s\n' % e)
 
-@app.route("/",methods=["GET"])
+
+@app.route("/", methods=["GET"])
 def hello():
     return "Server is running good!!"
+
+
+@app.route("/user_form", methods=["POST", "GET"])
+def display_form():
+    return render_template("user_form.html"), 200
+
+
+@app.route("/db_update", methods=["POST", "GET"])
+def db_update():
+    form_data = request.form
+    name = form_data.get("name")
+    com_preference = form_data.get("communication_preference")
+    answer_1 = form_data.get("ques_1")
+    answer_2 = form_data.get("ques_2")
+    answer_3 = form_data.get("ques_3")
+    answer_4 = form_data.get("ques_4")
+    answer_5 = form_data.get("ques_5")
+    answer_6 = form_data.get("ques_6")
+    return f"{name}-{com_preference}-{answer_1}-{answer_2}-{answer_3}-{answer_4}-{answer_5}-{answer_6}"
+
+
 # Expose /messages endpoint to capture webhooks
 # https://docs.smooch.io/rest/#webhooks-payload
 @app.route('/messages', methods=['POST', 'GET'])
