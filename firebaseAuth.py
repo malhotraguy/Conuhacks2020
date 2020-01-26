@@ -13,7 +13,7 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
-def pushDB(username,name,zendeskAppId,zendeskAppUId,quizNumbers, overlappedEvents,going):
+def pushDB(username,name,zendeskAppId,zendeskAppUId,quizNumbers, overlappedEvents,event):
     """
     ----------------------------------------
     Inserts given data into firebase db
@@ -42,10 +42,10 @@ def pushDB(username,name,zendeskAppId,zendeskAppUId,quizNumbers, overlappedEvent
     data = {
         'name':name,
         'zendeskAppID':zendeskAppId,
-        'zendeskAppUId':zendeskAppUId,
+        'zendeskAppUID':zendeskAppUId,
         'quizNumbers':quizNumbersFinal,
         'overlappedEvents':overlappedEventsFinal,
-        'event':''
+        'event':event
     }
     result = db.child(username).set(data)
     return result
@@ -73,8 +73,22 @@ def search(event):
     ----------------------------------------
     :param event: string
     ----------------------------------------
-    :return: ID and UID
+    :return: people: list
     """
+    people = {}
+
+    x = db.child().get().val()
+    print(x.values())
+
+    for i in x.values():
+        temp = []
+        if i["event"] == event:
+            user = i["name"]
+            temp.append(i["zendeskAppID"])
+            temp.append(i["zendeskAppUID"])
+            people.update({user:temp})
+    return people
+
 
 def changeStatus(username, event):
     """
@@ -95,8 +109,8 @@ def changeStatus(username, event):
 
 #a function that goes through all the users and gives the specific users UID and ID based upon GOING to same event.
 
-#pushDB("heyThere","Rahul","abc123","123abc",[10,50,100], ["skating","coffee"],None)
+pushDB("heyThere","Rahul","abc","123",[0,10,50], ["apple","bananas"],"soccer")
 # nah = fetchDB("heyThere",["name","zendeskAppID"])
 # print(nah)
-
-print(changeStatus("heyThere","soccer"))
+#print(search("soccer"))
+#print(changeStatus("heyThere","soccer"))
