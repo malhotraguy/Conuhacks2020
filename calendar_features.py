@@ -8,8 +8,9 @@ from dateutil.parser import *
 import pickle
 import os.path
 import sys
+import pprint
 
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 # get_creds() basic creds grabber for testing, only supports one user
 def get_creds(user_id = ''):
@@ -156,6 +157,24 @@ def volunteer_times(availability_times):
 			start = end # set next round's start to currend end
 	return plausible_blocks # returns list of plausible volunteer blocks (at least 1 hr)
 
+# create_event() takes in event details, two calendar services
+def create_event(chosen_time, worker_service):
+	worker_service.events().insert(calendarId="primary",
+		body={
+			"summary": chosen_time[2],
+			"start": {
+				"dateTime": chosen_time[0].isoformat(), "timeZone": "America/Toronto"
+			},
+			"end": {
+				"dateTime": chosen_time[1].isoformat(), "timeZone": "America/Toronto"
+			},
+			"attendees": [
+				{"email": "bronson.gergand@gmail.com"}
+			]
+		}
+		).execute()
+	print("\nCalendar event created.\n")
+
 def main(argv):
 	print("\n\t---DonateTime Calendar Manager Module---")
 	if (len(argv) != 3):
@@ -175,6 +194,8 @@ def main(argv):
 	# print( "\n\n\ncalendar_b:\n", calendar_b )
 	wanted_day = datetime.datetime(2020, 1, 30) # new datetime obj (yr, mnth, day)
 	test_day_employee = target_day(calendar_employee, wanted_day) # filter to just wanted_day
+	for each in test_day_employee:
+		print(each) # testing
 	test_day_charity = target_day(calendar_charity, wanted_day) # filter to just wanted_day
 	print("\n\nBig Availability Blocks:\n")
 	openings = compare_calendars(test_day_charity, test_day_employee) # list of openings
@@ -188,6 +209,8 @@ def main(argv):
 		print("\n\topening name: ", vol_block[2])
 		print("\tstart: ", vol_block[0])
 		print("\tend: ", vol_block[1])
+	# chosen_time = poss_vol_blocks[0] # example chosen volunteer block for testing
+	# create_event(chosen_time, serv_employee) # create event, pass poss time, worker serv
 
 if __name__ == '__main__':
 	main(sys.argv)
