@@ -1,52 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<link href="assets/css/user_form.css" rel="stylesheet" type="text/css" />
+	<meta charset="UTF-8">
+	<title>Donate Time</title>
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400&display=swap" rel="stylesheet"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 <body>
-<h2>USER INFO</h2>
+<h1>Donate Time</h1>
 <form action="/db_update" method="POST" enctype="multipart/form-data">
 
-        <div class="form-group">
-            <label>Unique Username:- </label>
-              <div class="custom-file">
-                <input type="text" class="custom-file-input" name="username" placeholder="JohnB1">
-              </div>
-              <label>Full Name:- </label>
-              <div class="custom-file">
-                <input type="text" class="custom-file-input" name="name" placeholder="John Barber">
-              </div>
-            <label>Communication Preference:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="communication_preference" placeholder="Telegram, Messenger , Whatsapp">
-            </div>
-            <label>Do you enjoy working with children?:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="ques_1" placeholder="1, 2, 3..">
-            </div>
-            <label>Do you enjoy teaching and are academically inclined?:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="ques_2" placeholder="1, 2, 3..">
-            </div>
-            <label>Do you like animals?:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="ques_3" placeholder="1, 2, 3..">
-            </div>
-            <label>Are you a sports connoisseur (soccer, basketball, football) and in decent physical shape?:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="ques_4" placeholder="1, 2, 3..">
-            </div>
-            <label>Would you enjoy helping the elderly carry out everyday tasks?:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="ques_5" placeholder="1, 2, 3..">
-            </div>
-            <label>Are you very organized and enjoy coordinating events?:- </label>
-            <div class="custom-file">
-                <input type="text" class="custom-file-input" name="ques_6" placeholder="1, 2, 3..">
-            </div>
-        </div>
+		<div class="form-group">
+			<label>Unique Username</label>
+			<div class="custom-file">
+			<input type="text" class="custom-file-input" name="username" placeholder="JohnB1">
+			</div>
+			<br />
+			<label>Full Name</label>
+			<div class="custom-file">
+			<input type="text" class="custom-file-input" name="name" placeholder="John Barber">
+			</div>
+			<br />
+			<label>Communication Preference</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="communication_preference" placeholder="Telegram, Messenger, Whatsapp, SMS"> -->
+				<select name="communication_preference" class="custom-file-input">
+					<option value="Telegram">Telegram</option>
+					<option value="Messenger">Messenger</option>
+					<option value="Whatsapp">Whatsapp</option>
+					<option value="SMS" selected>SMS</option>
+				</select> 
+			</div>
+			<h3>Rank the following from 1-6, in order of preference</h3>
+			<h4>(each number should only appear once)</h4>
+			<label>Working with Children</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="ques_1" placeholder="1, 2, 3.."> -->
+				<select name="ques_1" class="custom-file-input">
+					<option value="1" selected>1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select> 
+			</div>
+			<br />
+			<label>Teaching and Academics</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="ques_2" placeholder="1, 2, 3.."> -->
+				<select name="ques_2" class="custom-file-input">
+					<option value="1">1</option>
+					<option value="2" selected>2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select> 
+			</div>
+			<br />
+			<label>Working with Animals</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="ques_3" placeholder="1, 2, 3.."> -->
+				<select name="ques_3" class="custom-file-input">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3" selected>3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select> 
+			</div>
+			<br />
+			<label>Sports or Physical Activities</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="ques_4" placeholder="1, 2, 3.."> -->
+				<select name="ques_4" class="custom-file-input">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4" selected>4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select> 
+			</div>
+			<br />
+			<label>Working with the Elderly</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="ques_5" placeholder="1, 2, 3.."> -->
+				<select name="ques_5" class="custom-file-input">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5" selected>5</option>
+					<option value="6">6</option>
+				</select> 
+			</div>
+			<br />
+			<label>Organizing and Coordinating Events</label>
+			<div class="custom-file">
+				<!-- <input type="text" class="custom-file-input" name="ques_6" placeholder="1, 2, 3.."> -->
+				<select name="ques_6" class="custom-file-input">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6" selected>6</option>
+				</select> 
+			</div>
+			<br />
+		</div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" class="btn btn-primary">Submit</button>
 
-      </form>
+	  </form>

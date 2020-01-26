@@ -1,0 +1,24 @@
+body {
+	text-align: center;
+	font-family: 'Lato', sans-serif;
+}
+h1 {
+	/*background-color: #d3d3d3;*/
+}
+h3 {
+	padding-bottom: 0px;
+	margin-bottom: 2px;
+}
+h4 {
+	padding-top: 0px;
+	margin-top: 2px;
+	font-weight: normal;
+	font-style: italic;
+}
+.btn {
+	font-size: 20px;
+	border: 0;
+	background: #d3d3d3;
+	box-shadow: none;
+	border-radius: 2px;
+}
